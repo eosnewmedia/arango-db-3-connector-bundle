@@ -32,10 +32,10 @@ class EosArangoDBConnectorExtension extends ConfigurableExtension
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
         $container->autowire(ConnectionFactory::class)
-            ->addArgument($mergedConfig['servers'])
-            ->addArgument($mergedConfig['database'])
-            ->addArgument($mergedConfig['user'])
-            ->addArgument($mergedConfig['password'])
+            ->addArgument((array)$mergedConfig['servers'])
+            ->addArgument((string)$mergedConfig['database'])
+            ->addArgument((string)$mergedConfig['user'])
+            ->addArgument((string)$mergedConfig['password'])
             ->setPublic(false);
 
         $container->setAlias(ConnectionFactoryInterface::class, ConnectionFactory::class)
