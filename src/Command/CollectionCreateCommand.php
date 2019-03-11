@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Eos\Bundle\ArangoDBConnector\Command;
 
 use Eos\ArangoDBConnector\ArangoDBInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,15 +29,14 @@ class CollectionCreateCommand extends AbstractDatabaseCommand
         parent::__construct('collections:create', $databaseClient);
         $this->collections = $collections;
 
-        $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing collection?');
-
-        $this->addOption(
-            'collection',
-            null,
-            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Which collection should be created?',
+        $this->addArgument(
+            'collections',
+            InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+            'Which collections should be created?',
             array_keys($collections)
         );
+
+        $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing collection?');
     }
 
     /**
@@ -46,7 +46,7 @@ class CollectionCreateCommand extends AbstractDatabaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
-        foreach ($input->getOption('collection') as $collectionName) {
+        foreach ($input->getArgument('collections') as $collectionName) {
             if (!array_key_exists($collectionName, $this->collections)) {
                 $io->warning('Collection ' . $collectionName . ' is not configured.');
                 continue;

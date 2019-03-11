@@ -19,7 +19,7 @@ class CollectionRemoveCommand extends AbstractDatabaseCommand
      */
     public function __construct(ArangoDBInterface $databaseClient)
     {
-        parent::__construct('collections:create', $databaseClient);
+        parent::__construct('collections:remove', $databaseClient);
 
         $this->addArgument('collection', InputArgument::REQUIRED);
     }
