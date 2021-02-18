@@ -72,9 +72,7 @@ class CollectionCreateCommand extends AbstractDatabaseCommand
                 foreach ($collection['indices'] as $index) {
                     $this->getDatabaseClient()->collections()->createIndex(
                         $collectionName,
-                        $index['type'],
-                        $index['fields'],
-                        $index['options']
+                        $index
                     );
                 }
 
